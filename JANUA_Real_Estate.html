@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JANUA Real Estate | Luxury US Properties & AI Concierge</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Montserrat & Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              black: '#08090c',
+              dark: '#0f1015',
+              card: '#161820',
+              border: '#272935',
+              gray: '#8a8f9e',
+              lightgray: '#d1d5db',
+              silver: '#e5e7eb',
+              white: '#ffffff',
+              accent: '#3b82f6', // subtle blue signal accent
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Montserrat', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #08090c; }
+    ::-webkit-scrollbar-thumb { background: #374151; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #6b7280; }
+    
+    .silver-gradient-text {
+      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .silver-button-bg {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    }
+
+    .dark-glass {
+      background: rgba(15, 16, 21, 0.85);
+      backdrop-filter: blur(16px);
+    }
+  </style>
+</head>
+<body class="bg-brand-black text-gray-200 font-sans antialiased selection:bg-white selection:text-black min-h-screen flex flex-col">
+
+  <!-- Top Bar -->
+  <div class="bg-black/80 text-xs text-gray-400 py-2.5 border-b border-brand-border/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+      <div class="flex items-center space-x-6">
+        <span class="flex items-center space-x-2"><i class="fa-solid fa-location-dot text-gray-300"></i><span>Miami • Orlando • New York</span></span>
+        <span class="hidden md:flex items-center space-x-2"><i class="fa-solid fa-phone text-gray-300"></i><span>+1 (305) 800-JANUA</span></span>
+      </div>
+      <div class="flex items-center space-x-4">
+        <span class="text-xs text-zinc-400">Atendimento Internacional 24/7</span>
+        <div class="flex items-center space-x-2 border-l border-brand-border pl-4">
+          <button class="font-bold text-white">PT</button>
+          <span class="text-zinc-600">|</span>
+          <button class="text-zinc-400 hover:text-white transition">EN</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Header -->
+  <nav class="sticky top-0 z-40 dark-glass border-b border-brand-border/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Premium Minimalist Logo -->
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('inicio')">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-zinc-800 via-zinc-900 to-zinc-700 p-[1px] shadow-lg">
+            <div class="w-full h-full bg-brand-black rounded-[11px] flex items-center justify-center">
+              <span class="font-display font-black text-white text-xl tracking-tighter">J</span>
+            </div>
+          </div>
+          <div>
+            <span class="font-display font-black text-2xl tracking-[0.18em] text-white block leading-none">JANUA</span>
+            <span class="text-[9px] tracking-[0.35em] text-zinc-400 font-semibold uppercase block mt-1">REAL ESTATE USA</span>
+          </div>
+        </div>
+
+        <!-- Navigation Links -->
+        <div class="hidden md:flex items-center space-x-8 text-xs font-semibold uppercase tracking-wider">
+          <button onclick="switchTab('inicio')" id="nav-inicio" class="nav-link text-white py-2 border-b-2 border-white transition">Início</button>
+          <button onclick="switchTab('propriedades')" id="nav-propriedades" class="nav-link text-zinc-400 hover:text-white py-2 border-b-2 border-transparent transition">Propriedades</button>
+          <button onclick="switchTab('financiamento')" id="nav-financiamento" class="nav-link text-zinc-400 hover:text-white py-2 border-b-2 border-transparent transition">Financiamento EUA</button>
+          <button onclick="switchTab('sobre')" id="nav-sobre" class="nav-link text-zinc-400 hover:text-white py-2 border-b-2 border-transparent transition">Sobre Nós</button>
+          <button onclick="switchTab('contato')" id="nav-contato" class="nav-link text-zinc-400 hover:text-white py-2 border-b-2 border-transparent transition">Contato</button>
+        </div>
+
+        <!-- CTA Button -->
+        <div class="hidden lg:flex items-center">
+          <button onclick="toggleChat()" class="bg-zinc-100 hover:bg-white text-brand-black font-bold px-5 py-2.5 rounded-xl shadow-lg transition flex items-center space-x-2.5 text-xs uppercase tracking-wider">
+            <i class="fa-solid fa-headset text-sm"></i>
+            <span>Consultoria IA</span>
+          </button>
+        </div>
+
+        <!-- Mobile menu button -->
+        <div class="md:hidden flex items-center">
+          <button onclick="toggleMobileMenu()" class="text-zinc-300 hover:text-white focus:outline-none">
+            <i class="fa-solid fa-bars text-2xl"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div id="mobile-menu" class="hidden md:hidden bg-brand-dark border-b border-brand-border px-4 pt-3 pb-5 space-y-3">
+      <button onclick="switchTab('inicio'); toggleMobileMenu()" class="block w-full text-left py-2 text-white font-semibold">Início</button>
+      <button onclick="switchTab('propriedades'); toggleMobileMenu()" class="block w-full text-left py-2 text-zinc-400 hover:text-white">Propriedades</button>
+      <button onclick="switchTab('financiamento'); toggleMobileMenu()" class="block w-full text-left py-2 text-zinc-400 hover:text-white">Financiamento EUA</button>
+      <button onclick="switchTab('sobre'); toggleMobileMenu()" class="block w-full text-left py-2 text-zinc-400 hover:text-white">Sobre Nós</button>
+      <button onclick="switchTab('contato'); toggleMobileMenu()" class="block w-full text-left py-2 text-zinc-400 hover:text-white">Contato</button>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT AREA -->
+  <main id="main-content" class="flex-1">
+    
+    <!-- SECTION 1: INÍCIO / HOME -->
+    <div id="tab-inicio" class="tab-page space-y-20 pb-16">
+      
+      <!-- Hero Section -->
+      <section class="relative min-h-[620px] flex items-center justify-center py-20 px-4 bg-cover bg-center border-b border-brand-border/80" style="background-image: linear-gradient(to bottom, rgba(8, 9, 12, 0.75), rgba(8, 9, 12, 0.95)), url('https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=2000&q=80');">
+        <div class="max-w-5xl mx-auto text-center space-y-8">
+          
+          <div class="inline-flex items-center space-x-2.5 bg-zinc-900/90 border border-zinc-700/60 rounded-full px-5 py-2 text-xs text-zinc-300 uppercase tracking-widest font-semibold backdrop-blur-md">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>Inteligência Imobiliária de Alto Padrão nos EUA</span>
+          </div>
+          
+          <h1 class="font-display text-4xl sm:text-6xl lg:text-7xl font-black text-white leading-tight tracking-tight">
+            INVICTA EXCELÊNCIA EM <br class="hidden sm:inline"><span class="silver-gradient-text">INVESTIMENTOS NOS EUA</span>
+          </h1>
+          
+          <p class="text-zinc-400 text-base sm:text-lg max-w-3xl mx-auto font-light leading-relaxed">
+            Assessoria boutique para aquisição de propriedades exclusivas e projetos de alto rendimento na Flórida, com soluções de crédito sob medida para brasileiros.
+          </p>
+
+          <!-- Search Filter Bar -->
+          <div class="pt-4 max-w-4xl mx-auto">
+            <div class="bg-brand-dark/95 p-4 rounded-2xl border border-brand-border shadow-2xl backdrop-blur-xl grid grid-cols-1 md:grid-cols-4 gap-3 text-left">
+              <div>
+                <label class="block text-[11px] font-semibold text-zinc-400 uppercase tracking-wider mb-1.5">Localização</label>
+                <select class="w-full bg-brand-card border border-brand-border rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-zinc-500">
+                  <option>Orlando, Flórida</option>
+                  <option>Miami, Flórida</option>
+                  <option>Windermere, Flórida</option>
+                  <option>Winter Park, Flórida</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-semibold text-zinc-400 uppercase tracking-wider mb-1.5">Categoria</label>
+                <select class="w-full bg-brand-card border border-brand-border rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-zinc-500">
+                  <option>Modern Luxury Villas</option>
+                  <option>Penthouse / Condos</option>
+                  <option>Townhouses Residenciais</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-semibold text-zinc-400 uppercase tracking-wider mb-1.5">Valor (USD)</label>
+                <select class="w-full bg-brand-card border border-brand-border rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-zinc-500">
+                  <option>$500,000 - $800,000</option>
+                  <option>$800,000 - $1.5M</option>
+                  <option>Acima de $1.5M</option>
+                </select>
+              </div>
+
+              <div class="flex items-end">
+                <button onclick="switchTab('propriedades')" class="w-full bg-white hover:bg-zinc-200 text-brand-black font-extrabold py-2.5 px-4 rounded-xl transition flex items-center justify-center space-x-2 text-xs uppercase tracking-wider shadow-lg">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <span>Explorar Imóveis</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Featured Section -->
+      <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 border-b border-brand-border/60 pb-6">
+          <div>
+            <span class="text-zinc-400 font-bold text-xs tracking-widest uppercase block mb-1">Oportunidades Selecionadas</span>
+            <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white">Portfólio em Destaque</h2>
+          </div>
+          <button onclick="switchTab('propriedades')" class="mt-4 md:mt-0 text-zinc-300 hover:text-white font-semibold flex items-center space-x-2 text-xs uppercase tracking-wider">
+            <span>Ver Coleção Completa</span>
+            <i class="fa-solid fa-arrow-right text-zinc-500"></i>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- MAIN FEATURED PROPERTY: ORLANDO VILLA -->
+          <div class="bg-brand-card rounded-2xl overflow-hidden border border-brand-border hover:border-zinc-500 transition duration-300 shadow-2xl group cursor-pointer" onclick="openPropertyModal()">
+            <div class="relative h-64 overflow-hidden">
+              <img src="property-exterior.jpg" alt="Orlando Modern Luxury Villa" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+              <div class="absolute top-4 left-4 bg-brand-black/90 text-white font-bold text-[10px] px-3 py-1.5 rounded-md border border-zinc-700 uppercase tracking-widest">
+                Exclusividade
+              </div>
+              <div class="absolute top-4 right-4 bg-zinc-900/90 border border-zinc-700 text-zinc-200 font-semibold text-[10px] px-3 py-1.5 rounded-md backdrop-blur-md">
+                Aprovação de Crédito BR
+              </div>
+              <div class="absolute bottom-4 left-4 right-4 flex justify-between items-end text-white">
+                <span class="font-display font-black text-2xl text-white tracking-tight">$ 620,000 <span class="text-xs text-zinc-400 font-normal">USD</span></span>
+              </div>
+            </div>
+
+            <div class="p-6 space-y-4">
+              <div>
+                <span class="text-xs text-zinc-400 block mb-1"><i class="fa-solid fa-location-dot text-zinc-400 me-1"></i> Windermere / Orlando, FL</span>
+                <h3 class="font-display font-bold text-xl text-white group-hover:text-zinc-300 transition">Modern Luxury Villa & Pool</h3>
+              </div>
+
+              <p class="text-zinc-400 text-xs leading-relaxed line-clamp-2">
+                Residência contemporânea de alto padrão com projeto arquitetônico moderno, acabamentos em pedra natural, área externa privativa com piscina e paisagismo tropical.
+              </p>
+
+              <!-- Property Features Grid -->
+              <div class="grid grid-cols-2 gap-3 pt-3 border-t border-brand-border text-xs text-zinc-300">
+                <div class="flex items-center space-x-2">
+                  <i class="fa-solid fa-bed text-zinc-400"></i>
+                  <span><strong>3</strong> Quartos (Suítes)</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <i class="fa-solid fa-water-ladder text-zinc-400"></i>
+                  <span><strong>Piscina</strong> Aquecida</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <i class="fa-solid fa-tree text-zinc-400"></i>
+                  <span><strong>Jardim</strong> Privativo</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <i class="fa-solid fa-car text-zinc-400"></i>
+                  <span>Garagem <strong>2 Vagas</strong></span>
+                </div>
+              </div>
+
+              <div class="pt-2">
+                <button class="w-full bg-brand-dark border border-brand-border hover:bg-white hover:text-black hover:border-white text-zinc-200 font-bold py-2.5 rounded-xl transition flex items-center justify-center space-x-2 text-xs uppercase tracking-wider">
+                  <span>Acessar Ficha do Imóvel</span>
+                  <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      <!-- Why JANUA Section -->
+      <section class="bg-brand-dark py-20 border-y border-brand-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center max-w-3xl mx-auto mb-16">
+            <span class="text-zinc-400 font-bold text-xs tracking-widest uppercase block mb-2">Estrutura de Atendimento</span>
+            <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white">Diferenciais da Assessoria JANUA</h2>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-brand-card p-8 rounded-2xl border border-brand-border space-y-4">
+              <div class="w-12 h-12 rounded-xl bg-zinc-800 border border-zinc-700 flex items-center justify-center text-white text-xl">
+                <i class="fa-solid fa-building-columns"></i>
+              </div>
+              <h3 class="font-display font-bold text-lg text-white">Financiamento Estruturado sem SSN</h3>
+              <p class="text-zinc-400 text-xs leading-relaxed">
+                Acesso direto às linhas de crédito *Foreign National Loan*, permitindo financiar até 75% da propriedade com comprovação de renda brasileira.
+              </p>
+            </div>
+
+            <div class="bg-brand-card p-8 rounded-2xl border border-brand-border space-y-4">
+              <div class="w-12 h-12 rounded-xl bg-zinc-800 border border-zinc-700 flex items-center justify-center text-white text-xl">
+                <i class="fa-solid fa-microchip"></i>
+              </div>
+              <h3 class="font-display font-bold text-lg text-white">Atendimento Assistido por IA</h3>
+              <p class="text-zinc-400 text-xs leading-relaxed">
+                Nossa assistente virtual responde instantaneamente sobre taxas, amortização, impostos locais e simulações hipotecárias sem tempo de espera.
+              </p>
+            </div>
+
+            <div class="bg-brand-card p-8 rounded-2xl border border-brand-border space-y-4">
+              <div class="w-12 h-12 rounded-xl bg-zinc-800 border border-zinc-700 flex items-center justify-center text-white text-xl">
+                <i class="fa-solid fa-chart-pie"></i>
+              </div>
+              <h3 class="font-display font-bold text-lg text-white">Gestão Patrimonial Completa</h3>
+              <p class="text-zinc-400 text-xs leading-relaxed">
+                Acompanhamento completo de abertura de empresa (LLC), conta bancária nos EUA e administração de aluguéis para rentabilidade em dólar.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- SECTION 2: PROPRIEDADES PAGE -->
+    <div id="tab-propriedades" class="tab-page hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
+      <div>
+        <h1 class="font-display text-3xl sm:text-4xl font-extrabold text-white mb-2">Imóveis Selecionados</h1>
+        <p class="text-zinc-400 text-sm">Residências e propriedades de alto padrão disponíveis na Flórida.</p>
+      </div>
+
+      <!-- Filter bar -->
+      <div class="bg-brand-card p-4 rounded-xl border border-brand-border flex flex-wrap gap-4 items-center justify-between">
+        <div class="flex flex-wrap gap-3">
+          <button class="bg-white text-brand-black font-bold px-4 py-2 rounded-lg text-xs uppercase tracking-wider">Todos</button>
+          <button class="bg-brand-dark text-zinc-300 hover:text-white border border-brand-border px-4 py-2 rounded-lg text-xs uppercase tracking-wider">Orlando</button>
+          <button class="bg-brand-dark text-zinc-300 hover:text-white border border-brand-border px-4 py-2 rounded-lg text-xs uppercase tracking-wider">Miami</button>
+          <button class="bg-brand-dark text-zinc-300 hover:text-white border border-brand-border px-4 py-2 rounded-lg text-xs uppercase tracking-wider">Com Piscina</button>
+        </div>
+        <span class="text-xs text-zinc-500">1 propriedade cadastrada</span>
+      </div>
+
+      <!-- Property Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Orlando Villa Card Trigger -->
+        <div class="bg-brand-card rounded-2xl overflow-hidden border border-zinc-700 shadow-2xl cursor-pointer hover:border-white transition" onclick="openPropertyModal()">
+          <img src="property-exterior.jpg" alt="Modern Luxury Villa em Windermere / Orlando" class="w-full h-60 object-cover">
+          <div class="p-6 space-y-3">
+            <span class="text-[10px] text-zinc-400 font-bold uppercase tracking-widest">Orlando / Windermere</span>
+            <h3 class="font-display font-bold text-xl text-white">Modern Luxury Villa & Pool</h3>
+            <p class="font-display text-2xl font-black text-white">$620,000 <span class="text-xs font-normal text-zinc-400">USD</span></p>
+            <p class="text-zinc-400 text-xs">3 Suítes • Piscina Aquecida • Jardim • Garagem 2 Vagas • 2,850 sqft</p>
+            <button class="w-full bg-white text-brand-black font-extrabold py-2.5 rounded-xl text-xs uppercase tracking-wider mt-2">Acessar Ficha Completa</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 3: FINANCIAMENTO EUA PAGE -->
+    <div id="tab-financiamento" class="tab-page hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+      <div class="max-w-3xl space-y-3">
+        <span class="text-zinc-400 font-bold text-xs tracking-widest uppercase block">Programa Foreign National Loan</span>
+        <h1 class="font-display text-3xl sm:text-4xl font-extrabold text-white">Financiamento Imobiliário para Brasileiros nos EUA</h1>
+        <p class="text-zinc-400 text-sm leading-relaxed">
+          Entenda como funciona o processo de crédito hipotecário americano para investidores internacionais, sem necessidade de residência prévia nos Estados Unidos.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-brand-card p-6 rounded-2xl border border-brand-border space-y-3">
+          <div class="text-3xl text-white font-black font-display">25%</div>
+          <h3 class="font-bold text-white text-sm">Entrada Mínima</h3>
+          <p class="text-zinc-400 text-xs leading-relaxed">Financiamento de até 75% do valor total de avaliação do imóvel diretamente com bancos americanos.</p>
+        </div>
+
+        <div class="bg-brand-card p-6 rounded-2xl border border-brand-border space-y-3">
+          <div class="text-3xl text-white font-black font-display">Sem SSN</div>
+          <h3 class="font-bold text-white text-sm">Sem Documento Americano</h3>
+          <p class="text-zinc-400 text-xs leading-relaxed">Não é necessário possuir Social Security Number ou histórico de crédito nos EUA.</p>
+        </div>
+
+        <div class="bg-brand-card p-6 rounded-2xl border border-brand-border space-y-3">
+          <div class="text-3xl text-white font-black font-display">30 Anos</div>
+          <h3 class="font-bold text-white text-sm">Prazos Flexíveis</h3>
+          <p class="text-zinc-400 text-xs leading-relaxed">Opções de financiamento de longo prazo com amortização em até 30 anos.</p>
+        </div>
+      </div>
+
+      <div class="bg-brand-card p-8 rounded-2xl border border-brand-border space-y-6">
+        <h2 class="font-display text-2xl font-bold text-white mb-4">Dúvidas Frequentes sobre Crédito Internacional</h2>
+        
+        <div class="space-y-4">
+          <div class="border border-brand-border rounded-xl p-5 bg-brand-dark">
+            <h4 class="font-bold text-white text-sm">Quais documentos são necessários para dar entrada no processo?</h4>
+            <p class="text-zinc-400 text-xs mt-2 leading-relaxed">Passaporte com visto americano válido, extratos bancários demonstrando saldo para a entrada, carta de referência bancária do Brasil e declaração do imposto de renda ou contador.</p>
+          </div>
+
+          <div class="border border-brand-border rounded-xl p-5 bg-brand-dark">
+            <h4 class="font-bold text-white text-sm">Posso pagar as parcelas com o rendimento do aluguel do imóvel?</h4>
+            <p class="text-zinc-400 text-xs mt-2 leading-relaxed">Sim. Para propriedades de investimento, a estimativa do valor de locação pode ser contabilizada na análise da taxa de cobertura de dívida pelo banco financiador.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 4: SOBRE NÓS PAGE -->
+    <div id="tab-sobre" class="tab-page hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div class="space-y-6">
+          <span class="text-zinc-400 font-bold text-xs tracking-widest uppercase block">Sobre a JANUA</span>
+          <h1 class="font-display text-3xl sm:text-4xl font-extrabold text-white">Tradição, Tecnologia e Segurança Jurídica</h1>
+          <p class="text-zinc-400 text-sm leading-relaxed">
+            A JANUA Real Estate é uma assessoria imobiliária boutique estabelecida na Flórida, dedicada a orientar famílias e investidores latino-americanos em todas as etapas de transações imobiliárias nos Estados Unidos.
+          </p>
+          <p class="text-zinc-400 text-sm leading-relaxed">
+            Integramos tecnologia de inteligência artificial em nossos processos para entregar análises de dados precisas, suporte contínuo e máxima eficiência operacional do primeiro contato até o fechamento.
+          </p>
+        </div>
+        <div class="rounded-2xl overflow-hidden border border-brand-border shadow-2xl">
+          <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1000&q=80" alt="JANUA Real Estate Office" class="w-full h-full object-cover">
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 5: CONTATO PAGE -->
+    <div id="tab-contato" class="tab-page hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
+      <div>
+        <h1 class="font-display text-3xl font-extrabold text-white mb-2">Atendimento Especializado</h1>
+        <p class="text-zinc-400 text-sm">Solicite uma consultoria com nossa equipe técnica.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div class="bg-brand-card p-8 rounded-2xl border border-brand-border space-y-6">
+          <form onsubmit="event.preventDefault(); alert('Mensagem enviada! Nosso consultor entrará em contato em breve.');" class="space-y-4">
+            <div>
+              <label class="block text-[11px] font-semibold text-zinc-400 uppercase tracking-wider mb-1.5">Nome Completo</label>
+              <input type="text" required placeholder="Seu nome" class="w-full bg-brand-dark border border-brand-border rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-zinc-500">
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-[11px] font-semibold text-zinc-400 uppercase tracking-wider mb-1.5">E-mail</label>
+                <input type="email" required placeholder="seu@email.com" class="w-full bg-brand-dark border border-brand-border rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-zinc-500">
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-zinc-400 uppercase tracking-wider mb-1.5">Telefone / WhatsApp</label>
+                <input type="tel" required placeholder="+55 (11) 99999-9999" class="w-full bg-brand-dark border border-brand-border rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-zinc-500">
+              </div>
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-zinc-400 uppercase tracking-wider mb-1.5">Mensagem</label>
+              <textarea rows="4" placeholder="Tenho interesse na propriedade em Orlando de $620,000 USD..." class="w-full bg-brand-dark border border-brand-border rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-zinc-500"></textarea>
+            </div>
+            <button type="submit" class="w-full bg-white text-brand-black font-extrabold py-3 rounded-xl uppercase tracking-wider text-xs hover:bg-zinc-200 transition">Enviar Solicitação</button>
+          </form>
+        </div>
+
+        <div class="space-y-6">
+          <div class="bg-brand-card p-6 rounded-2xl border border-brand-border flex items-start space-x-4">
+            <div class="text-white text-xl"><i class="fa-solid fa-building"></i></div>
+            <div>
+              <h4 class="font-bold text-white text-sm">Escritório Orlando</h4>
+              <p class="text-zinc-400 text-xs mt-1">7901 Kingspointe Pkwy, Suite 12, Orlando, FL 32819</p>
+            </div>
+          </div>
+
+          <div class="bg-brand-card p-6 rounded-2xl border border-brand-border flex items-start space-x-4">
+            <div class="text-white text-xl"><i class="fa-solid fa-phone"></i></div>
+            <div>
+              <h4 class="font-bold text-white text-sm">Contatos Diretos</h4>
+              <p class="text-zinc-400 text-xs mt-1">EUA: +1 (305) 800-JANUA</p>
+              <p class="text-zinc-400 text-xs">Brasil: +55 (11) 4003-0000</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- PROPERTY DETAIL MODAL (DETALHES DA CASA EM ORLANDO) -->
+  <div id="property-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-brand-card border border-zinc-700 w-full max-w-5xl rounded-2xl overflow-hidden shadow-2xl relative max-h-[90vh] flex flex-col my-auto">
+      
+      <!-- Modal Header -->
+      <div class="bg-brand-dark px-6 py-4 border-b border-brand-border flex justify-between items-center sticky top-0 z-10">
+        <div>
+          <span class="text-[10px] text-zinc-400 font-bold uppercase tracking-widest">Código do Imóvel: #JNA-8821</span>
+          <h2 class="font-display font-bold text-xl text-white">Modern Luxury Villa in Windermere / Orlando</h2>
+        </div>
+        <button onclick="closePropertyModal()" class="text-zinc-400 hover:text-white text-2xl p-1 focus:outline-none">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-6 overflow-y-auto space-y-8">
+        
+        <!-- Main Image Gallery -->
+        <div class="space-y-3">
+          <div class="h-[380px] rounded-xl overflow-hidden relative border border-brand-border">
+            <img id="modal-main-img" src="property-exterior.jpg" alt="Modern Luxury Villa em Windermere / Orlando" class="w-full h-full object-cover transition duration-300">
+            <div class="absolute bottom-4 right-4 bg-black/80 text-zinc-300 text-[10px] px-3 py-1.5 rounded-md border border-zinc-700 uppercase tracking-widest">
+              Fotografia da Propriedade
+            </div>
+          </div>
+
+          <!-- Thumbnails -->
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+            <img onclick="changeModalImg(this.src)" src="property-exterior.jpg" alt="Fachada da propriedade" class="h-20 w-full object-cover rounded-lg cursor-pointer border-2 border-white opacity-100 transition">
+            <img onclick="changeModalImg(this.src)" src="property-pool.jpg" alt="Piscina e área externa" class="h-20 w-full object-cover rounded-lg cursor-pointer border-2 border-transparent hover:border-zinc-500 opacity-70 hover:opacity-100 transition">
+            <img onclick="changeModalImg(this.src)" src="property-bedroom.jpg" alt="Suíte principal" class="h-20 w-full object-cover rounded-lg cursor-pointer border-2 border-transparent hover:border-zinc-500 opacity-70 hover:opacity-100 transition">
+            <img onclick="changeModalImg(this.src)" src="property-garage.jpg" alt="Garagem para dois veículos" class="h-20 w-full object-cover rounded-lg cursor-pointer border-2 border-transparent hover:border-zinc-500 opacity-70 hover:opacity-100 transition">
+            <img onclick="changeModalImg(this.src)" src="property-terrace.jpg" alt="Área externa e piscina" class="h-20 w-full object-cover rounded-lg cursor-pointer border-2 border-transparent hover:border-zinc-500 opacity-70 hover:opacity-100 transition">
+          </div>
+        </div>
+
+        <!-- Specs & Financial Summary -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="md:col-span-2 space-y-4">
+            <div class="flex items-baseline space-x-3">
+              <span class="font-display font-black text-3xl text-white">$620,000 USD</span>
+              <span class="text-xs text-zinc-400">($217 / sqft)</span>
+            </div>
+
+            <p class="text-zinc-300 text-xs leading-relaxed">
+              Exclusiva residência unifamiliar contemporânea em Windermere, Orlando. Projeto arquitetônico de alto padrão composto por **3 amplas suítes**, conceito aberto integrado, **piscina privativa aquecida**, **jardim tropical** e **garagem para 2 veículos**.
+            </p>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 py-3 bg-brand-dark p-4 rounded-xl border border-brand-border text-center">
+              <div>
+                <span class="text-[10px] text-zinc-400 uppercase tracking-wider block">Dormitórios</span>
+                <span class="font-bold text-white text-xs">3 Suítes</span>
+              </div>
+              <div>
+                <span class="text-[10px] text-zinc-400 uppercase tracking-wider block">Banheiros</span>
+                <span class="font-bold text-white text-xs">3.5 Baths</span>
+              </div>
+              <div>
+                <span class="text-[10px] text-zinc-400 uppercase tracking-wider block">Área Construída</span>
+                <span class="font-bold text-white text-xs">2,850 sqft</span>
+              </div>
+              <div>
+                <span class="text-[10px] text-zinc-400 uppercase tracking-wider block">Condomínio</span>
+                <span class="font-bold text-white text-xs">$180 / mês</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Financial Estimator Card -->
+          <div class="bg-brand-dark p-5 rounded-xl border border-brand-border space-y-3">
+            <h4 class="font-bold text-white text-xs uppercase tracking-wider border-b border-brand-border pb-2">Simulação de Crédito EUA</h4>
+            
+            <div class="space-y-2 text-xs">
+              <div class="flex justify-between text-zinc-400">
+                <span>Entrada (25%):</span>
+                <span class="font-bold text-white">$155,000 USD</span>
+              </div>
+              <div class="flex justify-between text-zinc-400">
+                <span>Financiamento (75%):</span>
+                <span class="font-bold text-white">$465,000 USD</span>
+              </div>
+              <div class="flex justify-between text-zinc-400">
+                <span>Imposto Anual (IPTU):</span>
+                <span class="font-bold text-white">~$7,440 / ano</span>
+              </div>
+              <div class="pt-2 border-t border-brand-border flex justify-between text-white font-bold text-xs">
+                <span>Parcela Estimada:</span>
+                <span>~$2,980 / mês</span>
+              </div>
+            </div>
+
+            <button onclick="closePropertyModal(); toggleChat('Gostaria de agendar uma visita virtual para o imóvel de $620k em Orlando.');" class="w-full bg-white text-brand-black font-extrabold py-2.5 rounded-xl text-xs uppercase tracking-wider hover:bg-zinc-200 transition flex items-center justify-center space-x-2 mt-2">
+              <i class="fa-solid fa-headset"></i>
+              <span>Consultar IA sobre este Imóvel</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- AI CONCIERGE CHATBOT WIDGET (SOPHIA) -->
+  <div class="fixed bottom-5 right-5 z-50">
+    
+    <!-- Collapsed Button -->
+    <button id="chat-toggle-btn" onclick="toggleChat()" class="bg-white hover:bg-zinc-200 text-brand-black px-4 py-3.5 rounded-full shadow-2xl hover:scale-105 transition duration-300 flex items-center space-x-3 border border-zinc-300">
+      <div class="relative flex items-center justify-center">
+        <i class="fa-solid fa-robot text-lg"></i>
+        <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-emerald-500 rounded-full border border-white"></span>
+      </div>
+      <span class="font-extrabold text-xs uppercase tracking-wider hidden sm:inline">Assistência IA</span>
+    </button>
+
+    <!-- Expanded Chat Window -->
+    <div id="chat-window" class="hidden w-[90vw] sm:w-[380px] h-[520px] bg-brand-card border border-zinc-700 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+      
+      <!-- Chat Header -->
+      <div class="bg-brand-dark p-4 border-b border-brand-border flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="w-8 h-8 rounded-lg bg-zinc-800 border border-zinc-700 flex items-center justify-center text-white text-sm">
+            <i class="fa-solid fa-robot"></i>
+          </div>
+          <div>
+            <h4 class="font-bold text-white text-xs tracking-wide">Sophia • Concierge JANUA</h4>
+            <span class="text-[9px] text-emerald-400 font-semibold block">● Inteligência Artificial Conectada</span>
+          </div>
+        </div>
+        <button onclick="toggleChat()" class="text-zinc-400 hover:text-white text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Chat History -->
+      <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 text-xs">
+        
+        <!-- Welcome Message -->
+        <div class="bg-brand-dark border border-brand-border text-zinc-300 p-3 rounded-xl rounded-tl-none max-w-[88%] space-y-1">
+          <p class="font-bold text-white text-[11px]">Olá! Bem-vindo à JANUA Real Estate.</p>
+          <p class="text-zinc-400">Sou a **Sophia**, sua assistente de inteligência artificial. Como posso ajudar na sua análise de investimento nos EUA?</p>
+        </div>
+
+      </div>
+
+      <!-- Quick Action Pills -->
+      <div class="px-3 py-2 bg-brand-dark border-t border-brand-border flex gap-1.5 overflow-x-auto whitespace-nowrap scrollbar-none text-[10px]">
+        <button onclick="sendQuickMessage('Como funciona o financiamento para brasileiros?')" class="bg-brand-card border border-brand-border hover:border-zinc-500 text-zinc-300 px-2.5 py-1 rounded-lg transition">
+          Financiamento BR
+        </button>
+        <button onclick="sendQuickMessage('Qual o valor da entrada para a casa de Orlando?')" class="bg-brand-card border border-brand-border hover:border-zinc-500 text-zinc-300 px-2.5 py-1 rounded-lg transition">
+          Entrada Orlando
+        </button>
+        <button onclick="sendQuickMessage('Quero agendar uma visita virtual')" class="bg-brand-card border border-brand-border hover:border-zinc-500 text-zinc-300 px-2.5 py-1 rounded-lg transition">
+          Agendar Visita
+        </button>
+      </div>
+
+      <!-- Input Area -->
+      <div class="p-3 bg-brand-dark border-t border-brand-border flex items-center space-x-2">
+        <input type="text" id="chat-input" onkeypress="if(event.key==='Enter') sendChatMessage()" placeholder="Digite sua dúvida..." class="flex-1 bg-brand-card border border-brand-border rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-zinc-500">
+        <button onclick="sendChatMessage()" class="bg-white text-brand-black p-2 rounded-xl hover:bg-zinc-200 transition">
+          <i class="fa-solid fa-paper-plane text-xs"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-brand-dark border-t border-brand-border pt-12 pb-6 text-xs text-zinc-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div class="space-y-3">
+          <span class="font-display font-bold text-white text-base tracking-wider">JANUA REAL ESTATE</span>
+          <p class="leading-relaxed text-zinc-400">Assessoria imobiliária boutique focada em investimento e gestão de propriedades de luxo na Flórida.</p>
+        </div>
+
+        <div>
+          <h5 class="font-bold text-white mb-3 uppercase tracking-wider text-[11px]">Menu</h5>
+          <ul class="space-y-2">
+            <li><button onclick="switchTab('inicio')" class="hover:text-white">Início</button></li>
+            <li><button onclick="switchTab('propriedades')" class="hover:text-white">Imóveis</button></li>
+            <li><button onclick="switchTab('financiamento')" class="hover:text-white">Financiamento Foreign National</button></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5 class="font-bold text-white mb-3 uppercase tracking-wider text-[11px]">Unidades</h5>
+          <p class="text-zinc-400">Orlando: 7901 Kingspointe Pkwy, FL</p>
+          <p class="text-zinc-400">Miami: 1000 Brickell Ave, FL</p>
+        </div>
+
+        <div>
+          <h5 class="font-bold text-white mb-3 uppercase tracking-wider text-[11px]">Credenciamento</h5>
+          <p class="text-zinc-400">Florida Licensed Real Estate Brokerage</p>
+          <p class="text-zinc-400">REALTOR® Member</p>
+        </div>
+      </div>
+
+      <div class="border-t border-brand-border pt-6 flex flex-col sm:flex-row justify-between items-center text-zinc-600 text-[11px]">
+        <p>© 2026 JANUA Real Estate USA. Todos os direitos reservados.</p>
+        <p class="mt-2 sm:mt-0">Privacidade • Termos de Uso</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Tab Switching Logic
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-page').forEach(page => page.classList.add('hidden'));
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('text-white', 'border-white');
+        link.classList.add('text-zinc-400', 'border-transparent');
+      });
+
+      const targetPage = document.getElementById(`tab-${tabId}`);
+      if (targetPage) targetPage.classList.remove('hidden');
+
+      const targetNav = document.getElementById(`nav-${tabId}`);
+      if (targetNav) {
+        targetNav.classList.add('text-white', 'border-white');
+        targetNav.classList.remove('text-zinc-400', 'border-transparent');
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    }
+
+    // Modal Logic
+    function openPropertyModal() {
+      document.getElementById('property-modal').classList.remove('hidden');
+    }
+
+    function closePropertyModal() {
+      document.getElementById('property-modal').classList.add('hidden');
+    }
+
+    function changeModalImg(src) {
+      document.getElementById('modal-main-img').src = src;
+    }
+
+    // Chatbot Logic
+    function toggleChat(initialText = '') {
+      const chatWindow = document.getElementById('chat-window');
+      const chatBtn = document.getElementById('chat-toggle-btn');
+      
+      if (chatWindow.classList.contains('hidden')) {
+        chatWindow.classList.remove('hidden');
+        chatBtn.classList.add('hidden');
+        if (initialText) {
+          sendQuickMessage(initialText);
+        }
+      } else {
+        chatWindow.classList.add('hidden');
+        chatBtn.classList.remove('hidden');
+      }
+    }
+
+    function sendQuickMessage(text) {
+      document.getElementById('chat-input').value = text;
+      sendChatMessage();
+    }
+
+    function sendChatMessage() {
+      const input = document.getElementById('chat-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const container = document.getElementById('chat-messages');
+
+      // Append User Message
+      const userMsgHtml = `
+        <div class="bg-zinc-800 border border-zinc-700 text-white p-3 rounded-xl rounded-tr-none ml-auto max-w-[85%] text-right text-xs">
+          <p>${text}</p>
+        </div>
+      `;
+      container.innerHTML += userMsgHtml;
+      input.value = '';
+      container.scrollTop = container.scrollHeight;
+
+      // Simulated Typing Indicator
+      const typingId = 'typing-' + Date.now();
+      const typingHtml = `
+        <div id="${typingId}" class="bg-brand-dark border border-brand-border text-zinc-400 p-2.5 rounded-xl rounded-tl-none max-w-[70%] text-xs flex items-center space-x-2">
+          <i class="fa-solid fa-spinner animate-spin text-white"></i>
+          <span>Sophia está processando...</span>
+        </div>
+      `;
+      container.innerHTML += typingHtml;
+      container.scrollTop = container.scrollHeight;
+
+      // Generate AI Response
+      setTimeout(() => {
+        document.getElementById(typingId)?.remove();
+        const aiResponse = getAiResponse(text);
+        const aiMsgHtml = `
+          <div class="bg-brand-dark border border-brand-border text-zinc-300 p-3 rounded-xl rounded-tl-none max-w-[88%] space-y-1 text-xs">
+            <p class="font-bold text-white text-[11px]">Sophia (Concierge IA)</p>
+            <p>${aiResponse}</p>
+          </div>
+        `;
+        container.innerHTML += aiMsgHtml;
+        container.scrollTop = container.scrollHeight;
+      }, 900);
+    }
+
+    function getAiResponse(query) {
+      const q = query.toLowerCase();
+
+      if (q.includes('financiamento') || q.includes('ssn') || q.includes('estrangeiro')) {
+        return "Compradores brasileiros podem financiar até **75% do valor** nos EUA sem possuir documento americano (SSN). A análise é feita via programa *Foreign National Loan* utilizando renda do Brasil. A entrada inicial é de 25%.";
+      }
+      
+      if (q.includes('entrada') || q.includes('orlando') || q.includes('620') || q.includes('valor')) {
+        return "Para a **Modern Luxury Villa em Orlando ($620,000 USD)**, a entrada mínima de 25% é de **$155,000 USD**. As parcelas do financiamento são estimadas em aproximadamente $2,980/mês.";
+      }
+
+      if (q.includes('visita') || q.includes('agendar') || q.includes('ver')) {
+        return "Com certeza! Posso agendar uma **Visita Virtual Privada em 4K** acompanhada do nosso corretor em Orlando. Por favor, envie seus dados na aba 'Contato' para confirmarmos a data.";
+      }
+
+      if (q.includes('condomínio') || q.includes('hoa') || q.includes('taxa')) {
+        return "A taxa de condomínio (HOA) desta casa em Windermere/Orlando é de **$180 USD/mês**, cobrindo a manutenção paisagística e segurança do residencial.";
+      }
+
+      return "Entendido! Como assistente virtual da JANUA, posso fornecer simulações de financiamento e fichas técnicas completas de todos os nossos imóveis na Flórida. Deseja analisar a viabilidade de crédito para o seu perfil?";
+    }
+  </script>
+</body>
+</html>
